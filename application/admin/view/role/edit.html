@@ -1,0 +1,131 @@
+﻿{include file="public/header"}
+<body>
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-admin-role-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="" name="note">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				{foreach name="arr" item="vo" key="key"}
+				<dl class="permission-list">
+					<dt>
+						<label>
+							<input type="checkbox" value="{$vo.id}" name="class_1[]" class="class_1" {if condition="in_array($vo['id'],$self_rules) == true"}checked="checked"{/if}>{$vo.title}
+						</label>
+					</dt>
+					<dd>
+						<dl class="cl permission-list2" style="border-bottom:0">
+							{foreach name="$arr[$key]['child']" item="v"}
+							<dt>
+								<label class="">
+									<input type="checkbox" value="{$v.id}" pid={$v.pid} name="class_2[]" class="class_2" {if condition="in_array($v['id'],$self_rules) == true"}checked="checked"{/if}>{$v.title}
+								</label>
+							</dt>
+							{/foreach}
+							<!-- <dd>
+								<label class="">
+									<input type="checkbox" value="" name="user-Character-1-0-0" id="user-Character-1-0-0">
+									添加</label>
+								<label class="">
+									<input type="checkbox" value="" name="user-Character-1-0-0" id="user-Character-1-0-1">
+									修改</label>
+								<label class="">
+									<input type="checkbox" value="" name="user-Character-1-0-0" id="user-Character-1-0-2">
+									删除</label>
+								<label class="">
+									<input type="checkbox" value="" name="user-Character-1-0-0" id="user-Character-1-0-3">
+									查看</label>
+								<label class="">
+									<input type="checkbox" value="" name="user-Character-1-0-0" id="user-Character-1-0-4">
+									审核</label>
+							</dd> -->
+						</dl>
+					</dd>
+				</dl>
+				
+				{/foreach}
+				
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input value="{$group_id} " name="group_id" type="hidden"/>
+				<button type="button" id="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+			</div>
+		</div>
+	</form>
+</article>
+
+
+{include file="public/footer"}
+
+<script type="text/javascript">
+$('.class_1').click(function(){
+	var name=$(this).is(":checked");
+	var id=$(this).val();
+	if(name)
+	{
+		$('.class_2').each(function(){
+			var pid=$(this).attr('pid');
+			if(id==pid)
+			{
+				$(this).prop('checked',true);
+			}
+		})
+	}
+	else
+	{
+		$('.class_2').each(function(){
+			var pid=$(this).attr('pid');
+			if(id==pid)
+			{
+				$(this).removeAttr("checked");
+			}
+		})
+	}
+});
+
+
+
+$('.class_2').click(function(){
+	var name=$(this).is(":checked");
+	var pid=$(this).attr('pid');
+	if(name)
+	{
+		$('.class_1').each(function(){
+			var id=$(this).val();
+			if(pid==id)
+			{
+				$(this).prop('checked',true);
+			}
+		})
+	}
+})
+
+
+$('#button').click(function(){
+	var url="{:url('role/update')}";
+	$.ajax({
+		type:'post',
+		url:url,
+		data:$('form').serialize(),
+		success:function(data){
+			alert(data.msg);
+		}
+	})
+})
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
