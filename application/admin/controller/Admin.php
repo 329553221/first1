@@ -3,7 +3,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Db;
-class Admin extends Controller
+class Admin extends Base
 {
     public function get_condition()
     {

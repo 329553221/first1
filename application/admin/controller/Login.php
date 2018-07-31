@@ -8,6 +8,12 @@ class Login extends Controller
 {
     public function index()
     {
+        $user_id=session('user_id');
+        
+        if(!empty($user_id))
+        {
+            $this->error('用户已登录，请勿重新登陆',url('index/index'));
+        }
         return $this->fetch();
     }
     
@@ -52,6 +58,36 @@ class Login extends Controller
         }
         
         return ['status'=>$status,'msg'=>$msg];
+    }
+    
+    
+    public function  have_try()
+    {
+        $url='http://www.kuaidi100.com/query';
+        $arr['type']='shunfeng';
+        $arr['postid']='123456';
+        $arr['temp']='0.2760640405065877';
+        $data_string=http_build_query($arr);
+        
+        /* print_r($data_string);exit; */
+        $timeout=60;
+        //curl验证成功
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            print curl_error($ch);
+        }
+        curl_close($ch);
+        
+        $content=json_decode($result,true); 
+       /*  $content=$content->toArray(); */
+        /* $list = $this -> jsonDatacount()->toArray(); */
+        var_dump($content['data']);exit;
+        return $result;
     }
     
 }

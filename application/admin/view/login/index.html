@@ -37,7 +37,7 @@
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <input name="" type="button" id="do_login" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
-          <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+          <input name="" type="button" id="have_try" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
         </div>
       </div>
     </form>
@@ -71,6 +71,29 @@ $(function(){
 		
 		 
 	});
+	
+	var url="{:url('login/have_try')}";
+	$('#have_try').click(function(){
+			
+			$.ajax({
+				url:url,
+				type:'post',
+				/* data:$('form').serialize(), */
+				success:function(data){
+					if(data.status==0)
+					{
+						$('#msg').html(data.msg);
+					}
+					else if(data.status==1)
+					{
+						$('#msg').html(data.msg);
+						location.href="{:url('index/index')}"
+					}
+				}
+			})
+			
+			 
+		});
 	
 	$('#kanbuq').click(function(){
 		var ts=Date.parse(new Date());

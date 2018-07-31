@@ -25,8 +25,10 @@ class Index extends Base
         return $this->fetch();
     }
     
-    public  function look()
+    public  function login_out()
     {
-        
+        Session::delete('user_id');
+        Session::delete('user_name');
+        $this->success('注销成功，正在返回',url('login/index'));
     }
 }
