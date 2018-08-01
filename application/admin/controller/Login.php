@@ -21,6 +21,7 @@ class Login extends Controller
     {
         $status=0;
         $msg='';
+        $data=$_REQUEST;
         
         $rule=[
             'username'=>'require',
@@ -34,13 +35,13 @@ class Login extends Controller
             'verify'=>['require'=>'验证码不能为空，请检查','captcha'=>'验证码错误']
         ];
         
-        $msg=$this->validate($_REQUEST, $rule,$msg);
+        $msg=$this->validate($data,$rule,$msg);
         
-        if($msg==true)
+        if($msg===true)
         {
             $arr=array();
-            $arr['name']=$_REQUEST['username'];
-            $arr['password']=$_REQUEST['password'];
+            $arr['name']=$data['username'];
+            $arr['password']=$data['password'];
             $result=db('admin')->where($arr)->find();
             
             if($result)
